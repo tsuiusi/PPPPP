@@ -1,5 +1,5 @@
-# PPPPP
-absolute injustice that it got cancelled. 
+# PRACTICEPRACTICEPRACTICEPRACTICEPRACTICE
+absolute travesty that it got cancelled. 
 
 https://mangaplus.shueisha.co.jp/titles/100175
 
