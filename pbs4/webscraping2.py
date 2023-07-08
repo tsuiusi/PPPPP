@@ -5,10 +5,24 @@ import requests
 # with open("filename", r) as f:
 #     doc = BeautifulSoup(f, "html.parser")
 
-url = "https://www.core77.com/jobs#keywords=industrial%20designer&job_levels=1&job_id=517303"
+url = "https://coinmarketcap.com/"
 
-result = requests.get(url)
-doc = BeautifulSoup(result.text, 'html.parser')
+result = requests.get(url).text
+doc = BeautifulSoup(result, 'html.parser')
 
-tags = doc.find_all(['p', 'div'])
-print(tags)
+tbody = doc.tbody
+trs = tbody.contents
+
+# print(trs[1].previousSibling)
+# print(list(trs[0].descendants))
+
+prices = {}
+
+for tr in trs[:10]:
+    name, price = tr.contents[2:4]
+    fixed_name = name.p.string
+    fixed_price = float(price.a.string.replace('$', '').replace(',', ''))
+
+    prices[fixed_name] = fixed_price
+
+print(prices)
