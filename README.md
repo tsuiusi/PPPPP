@@ -7,4 +7,4 @@ format:
 directory | libraries | date
 
 pbs4 | beautifulsoup | 8/7/23
-chatbot | nltk, tflearn, tensorflow | 8/7/23
+chatbot | nltk, tensorflow | 8/7/23
