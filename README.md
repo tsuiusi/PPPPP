@@ -13,3 +13,5 @@ transformers - gonna make a neural network from scratch, no video watching and w
 
 todos:
 1. fix the chatbot model so it outputs different outputs every time
+2. manipulating matrices requires a good understanding of linear algebra, and since matrices change shape every pass through a hidden layer, knowing what shape it is and how to use them is very helpful to understand fundamentals
+3. why do smaller numbers work better in neural networks ergo why dividing the training data by 255 help the accuracy significantly

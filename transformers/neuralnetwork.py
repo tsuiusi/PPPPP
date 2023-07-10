@@ -8,15 +8,28 @@ DATA = pd.read_csv('/Users/rtty/Documents/vscode/PPPPP/transformers/digit-recogn
 data = np.array(DATA)
 m, n = data.shape
 np.random.shuffle(data)
+
 data_dev = data[0:1000].T
-y_dev = data_dev[0]
-x_dev = data_dev[1:n]
+Y_dev = data_dev[0] # Labels
+X_dev = data_dev[1:n] / 255. # Data corresponding to value in label. 
 
-data_train = data[1000:m].T
-y_train = data_train[0]
-x_train = data_train[1:n]
+# Data is different to if I didn't divide by 255 since
+# the numbers are bigger and therefore will be more prone to 
+# errors arising (e.g incomplete grad descent)
 
-# labels = data[0]
+data_train = data[100:m].T
+Y_train = data_train[0] # Labels
+X_train = data_train[1:n] / 255. # same same
+_, m_train = X_train.shape
+
+## Learning process code
+# y_dev = data_dev[0]
+# x_dev = data_dev[1:n]
+# print(X_dev[243])
+# print('--------------------------------')
+# print(x_dev[243])
+
+
 
 # so now first row is labels
 
@@ -32,7 +45,7 @@ def forward(w1, b1, w2, b2, x):
     z1 = w1.dot(x) + b1 # dot product is multiplying the two together. stop thinking of dot product as determinant dipshit
     a1 = relu(z1)
     z2 = w2.dot(a1) + b2
-    a2 = softmax(a1)
+    a2 = softmax(z2)
     return z1, a1, z2, a2
 
 def backprop(w2, z1, a1, a2, x, y):
@@ -65,7 +78,7 @@ def deriv_relu(x):
     return x > 0
 
 def softmax(x):
-    return np.exp(x)/sum(np.exp(x))
+    return (np.exp(x)/sum(np.exp(x)))
 
 def one_hot_encoding(y):
     # y.size is the number of examples in the dataset, so in this case 42000
@@ -106,9 +119,9 @@ def predict(x, w1, b1, w2, b2):
     return predictions
 
 def test_predictions(index, w1, b1, w2, b2):
-    current_img = x_train[:, index, None]
+    current_img = X_train[:, index, None]
     prediction = predict(current_img, w1, b1, w2, b2)
-    label = y_train[index]
+    label = Y_train[index]
     print(f'Prediction: {prediction}')
     print(f'Label: {label}')
 
@@ -117,8 +130,7 @@ def test_predictions(index, w1, b1, w2, b2):
     plt.imshow(current_img, interpolation='nearest')
     plt.show()
 
-w1, b1, w2, b2 = gradient_descent(x_train, y_train, 2000, 0.1)
+w1, b1, w2, b2 = gradient_descent(X_train, Y_train, 2000, 0.5)
 for i in range(10):
     test_predictions(random.randint(1, 42000), w1, b1, w2, b2)
 
-# everything here's wrong i don't like it ew
