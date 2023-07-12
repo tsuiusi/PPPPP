@@ -22,7 +22,7 @@ Y_train = data_train[0] # Labels
 X_train = data_train[1:n] / 255. # same same
 _, m_train = X_train.shape
 
-## Learning process code
+## Learning process code (didn't work)
 # y_dev = data_dev[0]
 # x_dev = data_dev[1:n]
 # print(X_dev[243])
