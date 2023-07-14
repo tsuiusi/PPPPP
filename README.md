@@ -25,8 +25,5 @@ todos:
     - have a gui so i can post easy
     - figure out what i want on it tmr i am sleepytiming
 4. make a tensorflow or pytorch-like library for constructing neural networks
-5. research banks as per mother's command
-6. look at student accomodation (5) and rank them
-7. also credit cards that can use airport lounge and etc amenities
 
 how can you quantize personality? emotion? ?????????
