@@ -27,3 +27,10 @@ todos:
 4. make a tensorflow or pytorch-like library for constructing neural networks
 
 how can you quantize personality? emotion? ?????????
+
+other todo:
+1. finish gpt lecture
+2. find mt gym and join one
+3. write plan for fuji
+4. extrapolate two years ahead
+5. 

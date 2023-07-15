@@ -10,9 +10,9 @@ with open('input.txt', 'r', encoding='utf-8') as file:
 # Hyperparameters
 batch_size = 32 # 19 for 19 gpu cores? see if i can further optimize this
 block_size = 8
-max_iters = 3000
-eval_interval = 300
-learning_rate = 1e-2
+max_iters = 5000
+eval_interval = 500
+learning_rate = 1e-3
 device = 'cuda' if torch.cuda.is_available() else 'cpu' # see if there's a gpu option
 eval_iters = 200
 n_embd = 32
@@ -60,6 +60,27 @@ def estimate_loss():
         out[split] = losses.mean()
     model.train()
     return out
+
+class Head(nn.Module):
+    def __init__(self, head_size):
+        super().__init__()
+        self.key = nn.Linear(n_embd, head_size, bias=False)
+        self.query = nn.Linear(n_embd, head_size, bias=False)
+        self.value = nn.Linear(n_embd, head_size, bias=False)
+        self.register_buffer('tril', torch.tril(torch.ones(block_size, block_size)))
+
+    def forward(self, x):
+        B, T, C = x.shape
+        k = self.key(x)
+        q = self.query(x)
+        # Computing attention score 'affinities'
+        wei = q @ k.transpose(-2, -1) * C**-0.5 # B T C @ B C T ->               B T T
+        wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf')) # ((B T T))
+        wei = F.softmax(wei, dim=1) # B T T
+        # Weighted aggregation of values
+        v = self.value(x)
+        out = wei @ v # B T T @  B T C -> B T C
+        return out
 
 class BigramLanguageModel(nn.Module):
     def __init__(self):
@@ -122,3 +143,6 @@ for iter in range(max_iters):
 
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 print(decode(m.generate(context, max_new_tokens=500)[0].tolist()))
+
+# error is probably matrix multiplication done wrong somewhere 
+# check the calculations in generate
